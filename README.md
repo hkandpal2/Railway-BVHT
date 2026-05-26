@@ -1,2 +1,2 @@
 # Railway-BVHT
-This website allow you to learn 
+This website allows you to learn BVHT 
