@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Railways BVHT Troubleshooting & Diagnostic Portal</title>
+    <meta name="description" content="Technical portal for Amit Engineers and Oasis Fabrications Bio-Vacuum Hybrid Toilet (BVHT) systems in Indian Railways. Diagnostic codes, animated schematics, videos, and loggers.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-amit">
+    <!-- Background grid effect -->
+    <div class="grid-overlay"></div>
+
+    <!-- Header Section -->
+    <header class="main-header">
+        <div class="header-logo">
+            <span class="logo-icon">⚙️</span>
+            <div>
+                <h1>IR-BVHT Portal</h1>
+                <p class="subtitle">Bio-Vacuum Hybrid Toilet Technical Centre</p>
+            </div>
+        </div>
+
+        <!-- Real-time Dashboard Dials (Simulated) -->
+        <div class="dashboard-stats">
+            <div class="stat-dial">
+                <span class="dial-label">Main Reserv. Pressure</span>
+                <span class="dial-value" id="dial-mr-pressure">5.2 bar</span>
+                <div class="dial-bar"><div class="dial-bar-fill" style="width: 85%;"></div></div>
+            </div>
+            <div class="stat-dial">
+                <span class="dial-label">System Voltage</span>
+                <span class="dial-value" id="dial-voltage">110V DC</span>
+                <div class="dial-bar"><div class="dial-bar-fill success" style="width: 100%;"></div></div>
+            </div>
+            <div class="stat-dial">
+                <span class="dial-label">Vacuum Pressure</span>
+                <span class="dial-value" id="dial-vacuum">-0.35 bar</span>
+                <div class="dial-bar"><div class="dial-bar-fill warning" style="width: 70%;"></div></div>
+            </div>
+            <div class="stat-dial">
+                <span class="dial-label">System Status</span>
+                <span class="status-indicator online" id="system-status-indicator">ONLINE</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="app-container">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar-nav">
+            <div class="manufacturer-toggle-container">
+                <span class="toggle-label">Active System Make</span>
+                <div class="toggle-switch">
+                    <input type="radio" id="make-amit" name="system-make" value="amit" checked>
+                    <label for="make-amit" class="toggle-btn toggle-amit">Amit Engineers</label>
+                    <input type="radio" id="make-oasis" name="system-make" value="oasis">
+                    <label for="make-oasis" class="toggle-btn toggle-oasis">Oasis Fab</label>
+                    <span class="toggle-slider"></span>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <button class="nav-item active" id="btn-tab-schematic" data-tab="tab-schematic">
+                    <span class="nav-icon">📊</span> Interactive Schematic
+                </button>
+                <button class="nav-item" id="btn-tab-diagnostic" data-tab="tab-diagnostic">
+                    <span class="nav-icon">📟</span> PLC Diagnostic Panel
+                </button>
+                <button class="nav-item" id="btn-tab-softreverse" data-tab="tab-softreverse">
+                    <span class="nav-icon">🔄</span> Clog Soft-Reverse
+                </button>
+                <button class="nav-item" id="btn-tab-videos" data-tab="tab-videos">
+                    <span class="nav-icon">🎬</span> Troubleshooting Videos
+                </button>
+                <button class="nav-item" id="btn-tab-logger" data-tab="tab-logger">
+                    <span class="nav-icon">📝</span> Maintenance Logs
+                </button>
+            </nav>
+
+            <div class="sidebar-info">
+                <h3>Technical Support</h3>
+                <p>Ensure MR air supply is clean and water tank level sensor is functional prior to diagnostics.</p>
+                <div class="support-badges">
+                    <span class="badge">CAMTECH Approved</span>
+                    <span class="badge">LHB Coach Standard</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Dynamic Content Section -->
+        <section class="content-viewport">
+
+            <!-- TAB 1: INTERACTIVE PNEUMATIC SCHEMATIC -->
+            <div class="tab-pane active" id="tab-schematic">
+                <div class="pane-header">
+                    <h2>Interactive Pneumatic & Flow Schematic</h2>
+                    <p>Click on any component in the mechanical system layout below to view details, electrical values, and common failure diagnostics.</p>
+                </div>
+
+                <div class="schematic-layout">
+                    <div class="svg-container" id="interactive-svg-container">
+                        <!-- SVG Diagram of the Toilet System -->
+                        <svg viewBox="0 0 800 450" class="schematic-svg" id="bvht-schematic-svg">
+                            <!-- Definitions for Gradients -->
+                            <defs>
+                                <linearGradient id="pipe-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#1E293B"/>
+                                    <stop offset="50%" stop-color="#475569"/>
+                                    <stop offset="100%" stop-color="#0F172A"/>
+                                </linearGradient>
+                                <linearGradient id="glow-orange" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#F59E0B"/>
+                                    <stop offset="100%" stop-color="#EF4444"/>
+                                </linearGradient>
+                                <linearGradient id="glow-cyan" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#06B6D4"/>
+                                    <stop offset="100%" stop-color="#3B82F6"/>
+                                </linearGradient>
+                            </defs>
+
+                            <!-- Pipe Lines (Background) -->
+                            <!-- Waste Line: Toilet -> Inlet Valve -> Tank -> Outlet Valve -> Digester -->
+                            <path d="M 120 180 L 220 180 L 220 220 L 320 220 L 480 220 L 480 320 L 620 320" fill="none" stroke="url(#pipe-grad)" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" />
+                            <path id="waste-flow-line" class="flow-line" d="M 120 180 L 220 180 L 220 220 L 320 220 L 480 220 L 480 320 L 620 320" fill="none" stroke="transparent" stroke-width="6" stroke-dasharray="10, 15" stroke-linecap="round" />
+
+                            <!-- Air Line: Regulator -> Ejector -> Tank -->
+                            <path d="M 400 60 L 400 130 L 400 200" fill="none" stroke="#334155" stroke-width="8" stroke-linecap="round"/>
+                            <path id="air-flow-line" class="flow-line" d="M 400 60 L 400 200" fill="none" stroke="transparent" stroke-width="3" stroke-dasharray="6, 8" />
+
+                            <!-- 1. Toilet Pan (Visual Node) -->
+                            <g class="schematic-node" id="node-pan" transform="translate(60, 120)">
+                                <rect class="node-hitbox" x="0" y="0" width="120" height="90" rx="10" />
+                                <ellipse cx="60" cy="35" rx="35" ry="15" class="node-shape bowl" />
+                                <path d="M 25 35 Q 60 90 95 35" fill="none" stroke="#94A3B8" stroke-width="4" />
+                                <text x="60" y="80" class="node-label">Lavatory Pan</text>
+                            </g>
+
+                            <!-- 2. Inlet Pinch Valve -->
+                            <g class="schematic-node" id="node-inlet-valve" transform="translate(225, 175)">
+                                <rect class="node-hitbox" x="-20" y="-10" width="90" height="90" rx="10" />
+                                <polygon points="0,0 50,40 50,0 0,40" class="node-shape valve" />
+                                <line x1="25" y1="20" x2="25" y2="-5" stroke="#94A3B8" stroke-width="3" />
+                                <circle cx="25" cy="-5" r="8" class="valve-actuator" />
+                                <text x="25" y="65" class="node-label">Inlet Pinch Valve</text>
+                            </g>
+
+                            <!-- 3. Intermediate Vacuum Tank -->
+                            <g class="schematic-node" id="node-vacuum-tank" transform="translate(350, 180)">
+                                <rect class="node-hitbox" x="-10" y="-10" width="120" height="120" rx="10" />
+                                <rect class="node-shape tank" x="10" y="0" width="80" height="90" rx="20" />
+                                <text x="50" y="45" class="node-label inner">Intermediate</text>
+                                <text x="50" y="62" class="node-label inner">Vacuum Tank</text>
+                            </g>
+
+                            <!-- 4. Vacuum Ejector & Solenoids -->
+                            <g class="schematic-node" id="node-ejector" transform="translate(340, 20)">
+                                <rect class="node-hitbox" x="-10" y="-10" width="140" height="90" rx="10" />
+                                <rect class="node-shape regulator" x="10" y="10" width="100" height="40" rx="5" />
+                                <polygon points="30,30 90,20 90,40" class="ejector-cone" fill="#475569" stroke="#94A3B8" stroke-width="2" />
+                                <text x="60" y="68" class="node-label">Air Ejector</text>
+                            </g>
+
+                            <!-- 5. Outlet Pinch Valve -->
+                            <g class="schematic-node" id="node-outlet-valve" transform="translate(440, 260)">
+                                <rect class="node-hitbox" x="-20" y="-10" width="90" height="90" rx="10" />
+                                <polygon points="0,0 50,40 50,0 0,40" class="node-shape valve" />
+                                <line x1="25" y1="20" x2="25" y2="-5" stroke="#94A3B8" stroke-width="3" />
+                                <circle cx="25" cy="-5" r="8" class="valve-actuator" />
+                                <text x="25" y="65" class="node-label">Outlet Pinch Valve</text>
+                            </g>
+
+                            <!-- 6. Bio-Digester Tank -->
+                            <g class="schematic-node" id="node-digester" transform="translate(610, 250)">
+                                <rect class="node-hitbox" x="0" y="0" width="140" height="130" rx="10" />
+                                <rect class="node-shape digester-box" x="10" y="10" width="120" height="90" rx="8" />
+                                <line x1="10" y1="40" x2="130" y2="40" stroke="#475569" stroke-width="2" stroke-dasharray="4,4" />
+                                <text x="70" y="60" class="node-label inner">DRDO</text>
+                                <text x="70" y="75" class="node-label inner">Bio-Digester</text>
+                            </g>
+                        </svg>
+                    </div>
+
+                    <!-- Component Details Card -->
+                    <div class="component-details-card glass-panel" id="component-details-card">
+                        <div class="card-header">
+                            <span class="comp-icon" id="comp-icon">🚽</span>
+                            <div>
+                                <h3 id="comp-title">Select a Component</h3>
+                                <p class="comp-tag" id="comp-status">STATUS: STANDBY</p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p class="comp-desc" id="comp-desc">Click any component on the schematic diagram to show the diagnostic overview, electrical inputs, typical pressure, and maintenance steps.</p>
+                            <div class="comp-spec-list" id="comp-spec-list" style="display: none;">
+                                <div class="spec-row">
+                                    <span class="spec-name">Operating Air Pressure:</span>
+                                    <span class="spec-value" id="spec-pressure">-</span>
+                                </div>
+                                <div class="spec-row">
+                                    <span class="spec-name">Electrical Voltage:</span>
+                                    <span class="spec-value" id="spec-voltage">-</span>
+                                </div>
+                                <div class="spec-row">
+                                    <span class="spec-name">Primary Fault:</span>
+                                    <span class="spec-value warning" id="spec-fault">-</span>
+                                </div>
+                            </div>
+                            <div class="comp-actions" id="comp-actions" style="display: none;">
+                                <button class="action-btn-primary" id="btn-comp-video">🎥 View Maintenance Video</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Operating Sequence Walkthrough -->
+                <div class="sequence-walkthrough glass-panel">
+                    <h3>Pneumatic Flushing Sequence Cycle</h3>
+                    <div class="sequence-steps">
+                        <div class="seq-step active" id="seq-step-1">
+                            <span class="step-num">1</span>
+                            <h4>Idle Standby</h4>
+                            <p>Vacuum tank atmospheric, bowl water seal intact.</p>
+                        </div>
+                        <div class="seq-step" id="seq-step-2">
+                            <span class="step-num">2</span>
+                            <h4>Vacuum Creation</h4>
+                            <p>Ejector solenoid opens, generating -0.35 bar in intermediate tank.</p>
+                        </div>
+                        <div class="seq-step" id="seq-step-3">
+                            <span class="step-num">3</span>
+                            <h4>Bowl Evacuation</h4>
+                            <p>Inlet pinch valve opens; vacuum draws waste into intermediate tank.</p>
+                        </div>
+                        <div class="seq-step" id="seq-step-4">
+                            <span class="step-num">4</span>
+                            <h4>Pressurized Discharge</h4>
+                            <p>Inlet closes. Outlet opens, blowing waste into bio-digester.</p>
+                        </div>
+                    </div>
+                    <div class="sequence-controls">
+                        <button class="glow-btn" id="btn-simulate-flush">⚡ Trigger Flush Cycle Animation</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: PLC DIAGNOSTIC PANEL -->
+            <div class="tab-pane" id="tab-diagnostic">
+                <div class="pane-header">
+                    <h2>Microprocessor & PLC Control Panel Simulator</h2>
+                    <p>Replicate the actual on-board PLC controller interface. Choose a fault code to simulate screen readouts, indicator light states, and retrieve the corrective action protocol.</p>
+                </div>
+
+                <div class="diagnostic-grid">
+                    <!-- The Simulated Controller Unit -->
+                    <div class="plc-controller-enclosure">
+                        <div class="plc-faceplate">
+                            <!-- Controller Header -->
+                            <div class="plc-header">
+                                <span class="plc-maker" id="plc-maker-name">AMIT ENGINEERS</span>
+                                <span class="plc-model">MICRO-PLC SYSTEM V3.1</span>
+                            </div>
+
+                            <!-- LCD Digital Display -->
+                            <div class="plc-lcd-display">
+                                <div class="lcd-glow"></div>
+                                <div class="lcd-text" id="plc-display-line1">SYSTEM NORMAL</div>
+                                <div class="lcd-text code" id="plc-display-line2">READY FOR CYCLE</div>
+                                <div class="lcd-text alert" id="plc-display-line3">MR PRESS: 5.2 BAR</div>
+                            </div>
+
+                            <!-- LED Panel Indicators -->
+                            <div class="plc-led-panel">
+                                <div class="led-group">
+                                    <span class="led-light led-green active" id="led-power"></span>
+                                    <span class="led-label">POWER 110V</span>
+                                </div>
+                                <div class="led-group">
+                                    <span class="led-light led-amber active" id="led-air"></span>
+                                    <span class="led-label">AIR OK (>5B)</span>
+                                </div>
+                                <div class="led-group">
+                                    <span class="led-light led-cyan" id="led-vacuum"></span>
+                                    <span class="led-label">VACUUM ACT</span>
+                                </div>
+                                <div class="led-group">
+                                    <span class="led-light led-red" id="led-fault"></span>
+                                    <span class="led-label">SYS FAULT</span>
+                                </div>
+                            </div>
+
+                            <!-- Interface Buttons -->
+                            <div class="plc-buttons-row">
+                                <button class="plc-btn" id="plc-btn-up">▲</button>
+                                <button class="plc-btn" id="plc-btn-down">▼</button>
+                                <button class="plc-btn ok" id="plc-btn-ok">OK</button>
+                                <button class="plc-btn reset" id="plc-btn-reset">RESET</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fault Code Selection & Actions -->
+                    <div class="fault-lookup-card glass-panel">
+                        <h3>Simulate System Faults</h3>
+                        <p class="info-note">Select a fault condition from the dropdown to diagnose the issue on the control panel.</p>
+
+                        <div class="form-group">
+                            <label for="fault-select">Choose System Error:</label>
+                            <select id="fault-select" class="custom-select">
+                                <option value="NORMAL">-- System Healthy (Normal Operation) --</option>
+                                <optgroup label="Common Fault Conditions" id="fault-select-group">
+                                    <!-- Populated dynamically via JS based on Amit/Oasis selection -->
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <!-- Diagnostic Output -->
+                        <div class="diagnostic-output-box" id="diagnostic-output-box" style="display: none;">
+                            <h4 class="output-title">Resolution & Troubleshooting Protocol</h4>
+                            <div class="protocol-details">
+                                <div class="protocol-section">
+                                    <h5>🚨 Probable Cause:</h5>
+                                    <p id="fault-cause">No compressed air from Main Reservoir or clogged solenoid exhaust port.</p>
+                                </div>
+                                <div class="protocol-section">
+                                    <h5>🔧 Rectification Steps:</h5>
+                                    <ol id="fault-steps">
+                                        <li>Check MR air gauge in underframe.</li>
+                                        <li>Check if bypass valve is closed.</li>
+                                        <li>Measure coil resistance of Inlet Solenoid (should be ~120 ohms).</li>
+                                    </ol>
+                                </div>
+                                <div class="protocol-section">
+                                    <h5>📽️ Recommended Tutorial:</h5>
+                                    <div class="recommendation-link">
+                                        <span class="link-title" id="fault-video-recommendation">Replacing Inlet Solenoid.webm</span>
+                                        <button class="small-glow-btn" id="btn-fault-play-video">🎥 Play Tutorial</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: CLOG SOFT-REVERSE SIMULATOR -->
+            <div class="tab-pane" id="tab-softreverse">
+                <div class="pane-header">
+                    <h2>Emergency Clog Removal: Soft-Reverse Simulator</h2>
+                    <p>When an en-route toilet bowl blockage occurs, coaching depot staff use the "Soft-Reverse" purge. This forces the inlet pinch valve open and alternates air/vacuum pulses to clear obstructions.</p>
+                </div>
+
+                <div class="soft-reverse-grid">
+                    <!-- Interactive Button Console -->
+                    <div class="console-box glass-panel">
+                        <h3>Microprocessor Push-Button Panel</h3>
+                        <p class="console-instruct"><strong>Instructions:</strong> To trigger the Soft-Reverse protocol, you must click and hold buttons <span class="key-badge">S1</span>, <span class="key-badge">S2</span>, and <span class="key-badge">S3</span> simultaneously for exactly 3 seconds.</p>
+                        
+                        <div class="interactive-console-buttons">
+                            <button class="console-push-btn" id="btn-s1">S1 <span class="subtext">Diagnostic</span></button>
+                            <button class="console-push-btn" id="btn-s2">S2 <span class="subtext">Manual Act.</span></button>
+                            <button class="console-push-btn" id="btn-s3">S3 <span class="subtext">System Set</span></button>
+                        </div>
+
+                        <!-- Progress indicator -->
+                        <div class="hold-progress-container" id="hold-progress-container" style="display: none;">
+                            <div class="progress-label">Holding Buttons... <span id="progress-percent">0%</span></div>
+                            <div class="progress-bar-track">
+                                <div class="progress-bar-fill" id="hold-progress-bar"></div>
+                            </div>
+                        </div>
+
+                        <div class="system-alerts" id="console-alerts-box">
+                            <div class="alert-message standby">STANDBY: Ready to run Soft-Reverse Procedure.</div>
+                        </div>
+                    </div>
+
+                    <!-- Simulated Visual feedback -->
+                    <div class="simulator-feed-box glass-panel">
+                        <h3>Purge Cycle Animation Feed</h3>
+                        <div class="valve-simulation-box">
+                            <div class="sim-valve" id="sim-valve-inlet">
+                                <span class="valve-name">Inlet Pinch Valve</span>
+                                <span class="valve-status status-closed" id="status-val-inlet">CLOSED</span>
+                                <div class="valve-visual"><div class="gate"></div></div>
+                            </div>
+
+                            <div class="sim-valve" id="sim-valve-outlet">
+                                <span class="valve-name">Outlet Pinch Valve</span>
+                                <span class="valve-status status-closed" id="status-val-outlet">CLOSED</span>
+                                <div class="valve-visual"><div class="gate"></div></div>
+                            </div>
+
+                            <div class="sim-pressure-gauge">
+                                <span class="gauge-name">Internal Pressure</span>
+                                <div class="gauge-visual">
+                                    <div class="dial-needle" id="sim-gauge-needle" style="transform: rotate(0deg);"></div>
+                                    <div class="gauge-center"></div>
+                                </div>
+                                <span class="gauge-value" id="sim-gauge-value">0.0 bar</span>
+                            </div>
+                        </div>
+
+                        <div class="console-screen">
+                            <div class="scanlines"></div>
+                            <ul class="console-logs" id="console-logs-list">
+                                <li class="log-entry sys">[SYSTEM] Standby - Awaiting initialization keys...</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: VIDEOS & DOWNLOADS -->
+            <div class="tab-pane" id="tab-videos">
+                <div class="pane-header">
+                    <h2>Troubleshooting Videos & Reference Manuals</h2>
+                    <p>Browse and download instruction manuals and troubleshooting videos for depot staff. The canvas player below offers lightweight simulated animations of standard mechanical repairs.</p>
+                </div>
+
+                <div class="videos-and-manuals-layout">
+                    <!-- Library Grid -->
+                    <div class="library-container">
+                        <h3>Available Media Library</h3>
+                        <div class="video-grid" id="video-card-grid">
+                            <!-- Cards populated by JS based on selected make -->
+                        </div>
+
+                        <h3 style="margin-top: 40px;">Standard PDF Reference Manuals</h3>
+                        <div class="manuals-list">
+                            <div class="manual-item glass-panel">
+                                <span class="file-icon">📄</span>
+                                <div class="file-info">
+                                    <h4>Amit Engineers BVHT Technical Manual</h4>
+                                    <p>Comprehensive guide for wiring, solenoid replacement, and pneumatic tuning. (PDF, 2.1KB)</p>
+                                </div>
+                                <a href="downloads/amit_bvht_troubleshooting_guide.pdf" download class="glow-btn small">Download Manual</a>
+                            </div>
+                            <div class="manual-item glass-panel">
+                                <span class="file-icon">📄</span>
+                                <div class="file-info">
+                                    <h4>Oasis Fabrications BVHT Maintenance Manual</h4>
+                                    <p>Standard operating procedures for Oasis-specific pinch valves and controllers. (PDF, 2.1KB)</p>
+                                </div>
+                                <a href="downloads/oasis_bvht_troubleshooting_guide.pdf" download class="glow-btn small">Download Manual</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Custom Canvas video playback display -->
+                    <div class="canvas-video-player-panel glass-panel" id="canvas-player-container">
+                        <div class="player-header">
+                            <span class="player-dot"></span>
+                            <span class="player-dot"></span>
+                            <span class="player-dot"></span>
+                            <span class="now-playing-title" id="now-playing-title">No Video Loaded</span>
+                        </div>
+
+                        <!-- Canvas element representing our diagnostic/repair animation -->
+                        <div class="canvas-wrapper">
+                            <canvas id="troubleshoot-canvas" width="480" height="270"></canvas>
+                            <div class="play-overlay" id="player-play-overlay">
+                                <span class="play-triangle">▶</span>
+                                <p>Click "Play Tutorial" on a library card to start visual animation</p>
+                            </div>
+                        </div>
+
+                        <!-- Control Buttons -->
+                        <div class="player-controls">
+                            <button class="player-ctrl-btn" id="btn-player-play">Play</button>
+                            <button class="player-ctrl-btn" id="btn-player-pause">Pause</button>
+                            <button class="player-ctrl-btn" id="btn-player-restart">Reset</button>
+                            <a id="btn-player-download" href="#" download class="player-ctrl-btn download-btn">Download WebM File</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 5: MAINTENANCE LOGGER -->
+            <div class="tab-pane" id="tab-logger">
+                <div class="pane-header">
+                    <h2>Coaching Depot Maintenance Logging Portal</h2>
+                    <p>Record inspections, part replacements, and diagnostic outcomes. Logged data is saved locally on your terminal and can be exported as a report.</p>
+                </div>
+
+                <div class="logger-layout">
+                    <!-- Form Panel -->
+                    <div class="logger-form-card glass-panel">
+                        <h3>Log Maintenance Action</h3>
+                        <form id="maintenance-log-form">
+                            <div class="form-row-2">
+                                <div class="form-group">
+                                    <label for="log-coach">Coach Number:</label>
+                                    <input type="text" id="log-coach" required placeholder="e.g. CR 21453">
+                                </div>
+                                <div class="form-group">
+                                    <label for="log-train">Train Name/Number:</label>
+                                    <input type="text" id="log-train" required placeholder="e.g. Rajdhani Express (12951)">
+                                </div>
+                            </div>
+
+                            <div class="form-row-2">
+                                <div class="form-group">
+                                    <label for="log-depot">Coaching Depot:</label>
+                                    <select id="log-depot" class="custom-select">
+                                        <option value="NDLS">NDLS (New Delhi)</option>
+                                        <option value="HWH">HWH (Howrah)</option>
+                                        <option value="BDTS">BDTS (Bandra Terminus)</option>
+                                        <option value="MAS">MAS (Chennai Central)</option>
+                                        <option value="SBC">SBC (Bengaluru)</option>
+                                        <option value="GWL">GWL (Gwalior Depot)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="log-make">System Manufacturer:</label>
+                                    <select id="log-make" class="custom-select">
+                                        <option value="Amit Engineers">Amit Engineers</option>
+                                        <option value="Oasis Fabrications">Oasis Fabrications</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="log-issue">Primary Diagnostic Issue / Action Taken:</label>
+                                <textarea id="log-issue" required rows="3" placeholder="e.g. Replaced leaking inlet pinch valve sleeve. Flushed and verified vacuum -0.36 bar."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="log-status">System Clearance Status:</label>
+                                <select id="log-status" class="custom-select">
+                                    <option value="Fit">FIT for Service (Green Card)</option>
+                                    <option value="Requires Monitoring">Requires Monitoring / Trial run</option>
+                                    <option value="Unfit">UNFIT (Needs Attention)</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="glow-btn full-width">💾 Save Log Entry</button>
+                        </form>
+                    </div>
+
+                    <!-- History Table -->
+                    <div class="logs-history-card glass-panel">
+                        <div class="logs-header-row">
+                            <h3>Saved Maintenance History</h3>
+                            <div class="table-actions">
+                                <button class="glow-btn small" id="btn-export-logs">📤 Export to CSV</button>
+                                <button class="glow-btn small danger" id="btn-clear-logs">🗑️ Clear Logs</button>
+                            </div>
+                        </div>
+
+                        <div class="table-wrapper">
+                            <table class="logs-table" id="logs-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date/Time</th>
+                                        <th>Coach No.</th>
+                                        <th>Train</th>
+                                        <th>Make</th>
+                                        <th>Depot</th>
+                                        <th>Action Taken / Findings</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="logs-table-body">
+                                    <!-- Appended dynamically via JS -->
+                                    <tr>
+                                        <td colspan="7" class="empty-table-cell">No logs entered yet. Check inputs on the left.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Interactive Video Dialog Modal -->
+    <div class="modal-overlay" id="modal-video-overlay">
+        <div class="modal-content glass-panel">
+            <button class="modal-close" id="btn-modal-close">×</button>
+            <h3 id="modal-video-title">Troubleshooting Video</h3>
+            <div class="video-container">
+                <video id="modal-video-element" controls>
+                    <!-- Video sources updated dynamically -->
+                </video>
+            </div>
+            <div class="modal-desc-box">
+                <p id="modal-video-desc">Video tutorial details and offline download instructions.</p>
+                <a id="btn-modal-download" href="#" class="glow-btn" download>Download WebM Video</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script loading -->
+    <script src="app.js"></script>
+</body>
+</html>
