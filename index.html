@@ -631,6 +631,21 @@
         </a>
     </div>
 </section>
+    <section class="fault-section">
+
+    <h2>BVHT Fault Diagnostics</h2>
+
+    <select id="faultSelector">
+        <option value="">Select Fault</option>
+        <option value="ejectorChoke">Ejector Choking</option>
+        <option value="reverseFlush">Reverse Flushing</option>
+        <option value="pinchValveFailure">Pinch Valve Failure</option>
+    </select>
+
+    <div id="faultDisplay"></div>
+
+</section>
+    <script src="data/faultDatabase.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
