@@ -2077,6 +2077,37 @@ body {
 
     margin-right: 260px;
 }
+.right-components-panel {
+
+    position: fixed !important;
+
+    right: 15px !important;
+
+    top: 130px !important;
+
+    width: 210px !important;
+
+    z-index: 99999 !important;
+}
+
+.right-components-panel ul {
+
+    list-style: none !important;
+
+    padding: 0 !important;
+
+    margin: 0 !important;
+}
+
+.right-components-panel li {
+
+    margin-bottom: 12px !important;
+}
+
+.right-components-panel a {
+
+    text-decoration: none !important;
+}
 
 
 
