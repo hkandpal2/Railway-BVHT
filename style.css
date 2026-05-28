@@ -2109,6 +2109,65 @@ body {
     text-decoration: none !important;
 }
 
+/* Responsive Design */
 
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Images responsive */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Main containers */
+.container,
+.main-container,
+.content,
+.panel {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+
+  body {
+    font-size: 14px;
+  }
+
+  .container,
+  .main-container,
+  .content {
+    flex-direction: column !important;
+    padding: 10px;
+  }
+
+  .sidebar,
+  .left-panel,
+  .right-panel,
+  .card,
+  .box {
+    width: 100% !important;
+    margin: 0 0 15px 0 !important;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+    width: 100%;
+  }
+}
 
 
