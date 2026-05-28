@@ -2073,3 +2073,7 @@ body {
         transform: translateX(0);
     }
 }
+.schematic-container {
+
+    margin-right: 300px;
+}
