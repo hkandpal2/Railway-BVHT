@@ -1895,3 +1895,7 @@ body {
         background-position: 200%;
     }
 }
+#faultSelector option {
+    background: #111827;
+    color: white;
+}
