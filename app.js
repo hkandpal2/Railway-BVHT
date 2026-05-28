@@ -1194,6 +1194,43 @@ function closeModal() {
     modalVideoElement.removeAttribute('src');
     modalOverlay.classList.remove('active');
 }
+const selector = document.getElementById("faultSelector");
+const display = document.getElementById("faultDisplay");
+
+selector.addEventListener("change", () => {
+
+    const selectedFault = selector.value;
+
+    if (!selectedFault) {
+        display.innerHTML = "";
+        return;
+    }
+
+    const fault = faultDatabase[selectedFault];
+
+    display.innerHTML = `
+        <div class="fault-card">
+
+            <h3>${fault.title}</h3>
+
+            <h4>Symptoms</h4>
+            <ul>
+                ${fault.symptoms.map(item => `<li>${item}</li>`).join("")}
+            </ul>
+
+            <h4>Causes</h4>
+            <ul>
+                ${fault.causes.map(item => `<li>${item}</li>`).join("")}
+            </ul>
+
+            <h4>Solutions</h4>
+            <ul>
+                ${fault.solutions.map(item => `<li>${item}</li>`).join("")}
+            </ul>
+
+        </div>
+    `;
+});
 
 // Run app
 window.addEventListener('DOMContentLoaded', init);
