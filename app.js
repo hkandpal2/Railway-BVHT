@@ -165,8 +165,13 @@ const dialVoltage = document.getElementById('dial-voltage');
 const dialVacuum = document.getElementById('dial-vacuum');
 
 // Nav Tabs
-const navItems = document.querySelectorAll('.nav-item');
+const navItems = document.querySelectorAll('.nav-item[data-tab]');
 const tabPanes = document.querySelectorAll('.tab-pane');
+const systemComponentsButton = document.getElementById('btn-system-components');
+const systemImageModal = document.getElementById('system-image-modal');
+const systemImageCloseButton = document.getElementById('btn-system-image-close');
+const systemComponentsImage = document.getElementById('system-components-image');
+const systemImageError = document.getElementById('system-image-error');
 
 // Manufacturer Toggles
 const toggleAmit = document.getElementById('make-amit');
@@ -1175,6 +1180,33 @@ function setupModals() {
     modalOverlay.addEventListener('click', (e) => {
         if (e.target === modalOverlay) closeModal();
     });
+
+    systemComponentsButton.addEventListener('click', openSystemImageModal);
+    systemImageCloseButton.addEventListener('click', closeSystemImageModal);
+    systemImageModal.addEventListener('click', (e) => {
+        if (e.target === systemImageModal) closeSystemImageModal();
+    });
+    systemComponentsImage.addEventListener('error', () => {
+        systemComponentsImage.hidden = true;
+        systemImageError.hidden = false;
+    });
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !systemImageModal.hidden) {
+            closeSystemImageModal();
+        }
+    });
+}
+
+function openSystemImageModal() {
+    systemImageModal.hidden = false;
+    systemImageModal.classList.add('active');
+    systemImageCloseButton.focus();
+}
+
+function closeSystemImageModal() {
+    systemImageModal.classList.remove('active');
+    systemImageModal.hidden = true;
+    systemComponentsButton.focus();
 }
 
 function showVideoModal(videoFileName, title, descText) {

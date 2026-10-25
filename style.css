@@ -1725,6 +1725,54 @@ body {
     line-height: 1.4;
 }
 
+.system-image-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: var(--glass-blur);
+}
+
+.system-image-modal.active {
+    display: flex;
+}
+
+.system-image-modal[hidden] {
+    display: none;
+}
+
+.system-image-modal-content {
+    position: relative;
+    max-width: min(1100px, 95vw);
+    max-height: 90vh;
+    padding: 48px 20px 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    background: var(--bg-surface-solid);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.system-image-modal-content img {
+    display: block;
+    max-width: 100%;
+    max-height: calc(90vh - 72px);
+    margin: 0 auto;
+    object-fit: contain;
+}
+
+.system-image-modal-content .modal-close {
+    top: 8px;
+    right: 16px;
+}
+
+.system-image-modal-content p {
+    color: var(--text-secondary);
+}
+
 /* Responsive Rules */
 @media (max-width: 1200px) {
     .app-container {
@@ -2169,5 +2217,4 @@ img {
     width: 100%;
   }
 }
-
 

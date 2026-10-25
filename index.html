@@ -68,12 +68,9 @@
             </div>
 
             <nav class="nav-menu">
-<button class="nav-item"
-        onclick="document.getElementById('system-image').hidden = false;">
-    <span class="nav-icon">⚙️</span>
-    System Components
-</button>
-
+                <button class="nav-item" type="button" id="btn-system-components">
+                    <span class="nav-icon">⚙️</span> System Components
+                </button>
                 <button class="nav-item active" id="btn-tab-schematic" data-tab="tab-schematic">
                     <span class="nav-icon">📊</span> Interactive Schematic
                 </button>
@@ -604,6 +601,14 @@
 
         </section>
     </main>
+
+    <div class="system-image-modal" id="system-image-modal" role="dialog" aria-modal="true" aria-label="System Components image" hidden>
+        <div class="system-image-modal-content">
+            <button class="modal-close" id="btn-system-image-close" type="button" aria-label="Close image">×</button>
+            <img id="system-components-image" src="images/WhatsApp%20Image%202026-10-25%20at%2014.42.38.jpeg" alt="BVHT system components">
+            <p id="system-image-error" role="status" hidden>Could not load the image. Check that the JPEG is in the images folder.</p>
+        </div>
+    </div>
 
     <!-- Interactive Video Dialog Modal -->
     <div class="modal-overlay" id="modal-video-overlay">
